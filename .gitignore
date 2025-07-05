@@ -1,0 +1,13 @@
+.DS_Store
+StardewValley/**
+configstore/**
+deezer-desktop/**
+flipper/**
+flipperdevices.com/**
+git/**
+github-copilot/**
+iterm2/**
+lvim/**
+nvim.bak/
+urh/**
+yarn/**

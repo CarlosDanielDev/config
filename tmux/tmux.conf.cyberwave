@@ -1,0 +1,118 @@
+# Terminal settings for Warp integration
+set -g default-terminal "xterm-256color"
+set -ga terminal-overrides ",xterm-256color:Tc"
+set -ga terminal-overrides ",*:RGB"
+set -ga terminal-overrides ",*:Tc"
+set -ga terminal-overrides ',*:Smulx=\E[4::%p1%dm'  # undercurl support
+set -ga terminal-overrides ',*:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'  # underscore colors
+# action key
+unbind C-b
+set-option -g prefix C-a
+set-option -g repeat-time 0
+set-option -g focus-events on
+
+#### Key bindings
+
+set-window-option -g mode-keys vi
+
+bind '"' split-window -c "#{pane_current_path}"
+bind % split-window -h -c "#{pane_current_path}"
+
+
+#bind t send-key C-t
+# Reload settings
+bind r source-file ~/.config/tmux/tmux.conf \; display "Reloaded!"
+# Open current directory
+bind o run-shell "open #{pane_current_path}"
+bind -r e kill-pane -a
+
+# vim-like pane switching
+bind -r k select-pane -U 
+bind -r j select-pane -D 
+bind -r h select-pane -L 
+bind -r l select-pane -R 
+
+# Moving window
+bind-key -n C-S-Left swap-window -t -1 \; previous-window
+bind-key -n C-S-Right swap-window -t +1 \; next-window
+
+# Resizing pane
+bind -r C-k resize-pane -U 5
+bind -r C-j resize-pane -D 5
+bind -r C-h resize-pane -L 5
+bind -r C-l resize-pane -R 5
+
+#### basic settings
+
+set-option -g status-justify "left"
+#set-option utf8-default on
+#set-option -g mouse-select-pane
+set-window-option -g mode-keys vi
+#set-window-option -g utf8 on
+# look'n feel
+set-option -g status-fg "#5fb0ff" # Softer Neon Blue
+set-option -g status-bg "#0f1117" # Soft dark background
+set -g pane-active-border-style fg="#b77fdb",bg=default # Muted Purple
+set -g window-style fg="#5fb0ff",bg="#0f1117" # Softer Blue text on Dark bg
+set -g window-active-style fg="#7dcfcf",bg="#0f1117" # Softer Cyan text on Dark bg
+set-option -g history-limit 64096
+
+# Faster command sequences (specifically for Warp)
+set -sg escape-time 5
+
+# Enable focus events for better terminal integration
+set -g focus-events on
+
+# Enable mouse support
+set -g mouse on
+
+# Support for cursor shape changes
+set -ga terminal-overrides '*:Ss=\E[%p1%d q:Se=\E[ q'
+
+# Improve terminal scrolling
+set -g terminal-overrides 'xterm*:smcup@:rmcup@'
+
+# Undercurl support
+set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'
+set -as terminal-overrides ',*:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'
+
+#### COLOUR
+
+# default statusbar colors
+set-option -g status-style bg="#0f1117",fg="#5fb0ff",default # Soft dark bg, Softer Blue fg
+
+# default window title colors
+set-window-option -g window-status-style fg="#6272a4",bg="#0f1117",dim # Muted Blue on Dark bg, dim
+
+# active window title colors
+set-window-option -g window-status-current-style fg="#b77fdb",bg="#0f1117",bright # Muted Purple on Dark bg, bright
+
+# pane border
+set-option -g pane-border-style fg="#2d3450" # Subtle Selection color
+set-option -g pane-active-border-style fg="#b77fdb",bg="#0f1117" # Muted Purple on Dark bg
+
+# message text
+set-option -g message-style bg="#0f1117",fg="#7dcfcf" # Softer Cyan text on Dark bg
+
+# pane number display
+set-option -g display-panes-active-colour "#d787d7" # Softer Magenta
+set-option -g display-panes-colour "#5fb0ff" # Softer Blue
+
+# clock
+set-window-option -g clock-mode-colour "#7dcfcf" # Softer Cyan
+
+# allow the title bar to adapt to whatever host you connect to
+set -g set-titles on
+set -g set-titles-string "#T"
+
+# Warp-specific terminal handling
+set -as terminal-features ",*:hyperlinks"
+set -as terminal-features ",*:strikethrough"
+set -g allow-passthrough on
+set -g extended-keys on
+
+# import
+if-shell "uname -s | grep -q Darwin" "source ~/.config/tmux/macos.conf"
+
+source ~/.config/tmux/statusline.conf
+source ~/.config/tmux/utility.conf
